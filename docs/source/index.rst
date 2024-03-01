@@ -30,6 +30,14 @@ User Requirments
 
 *5. Allow for automated task assignment with ability to manually edit task assignment
 
+Elements of implementation
+=======================
+1. App was programmed in Flutter
+
+2. Flutter run entered into the terminal runs the app
+
+3. Github was used to keep track of the changes
+
 
 Instructions on how to set up/run the project
 =================
