@@ -31,7 +31,7 @@ User Requirments
 *5. Allow for automated task assignment with ability to manually edit task assignment
 
 
-Instructions on how to set up/run your project
+Instructions on how to set up/run the project
 =================
 
 - You need to have a Flutter SDK version above 3.2.6 and Dart 3.3.0 installed as it's a prerequisite for Flutter.
