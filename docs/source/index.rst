@@ -60,3 +60,27 @@ Contents
 .. toctree::
 
    usage
+
+Discussion of the main components
+----------------------------------
+GUI
+
+Main
+
+Login Manager
+
+Local Storage
+
+Tickets Manager
+
+Settings Manager
+
+Notification Manager
+
+File Manager
+
+Permission Manager
+
+Profile Manager
+
+Projects Manager
