@@ -7,13 +7,18 @@ It allows users to setup a series of *projects* and *tasks* in an organised mann
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
 
-   Requirements/requirements
-   Usage/installation
+   Setup/requirements
+   Setup/installation
    Usage/defs
    Usage/req1
    Usage/req2
+   Usage/req3
+   Usage/req4
+   Usage/req5
+   Usage/req6
+   Usage/req7
    elements
    
 .. note::
