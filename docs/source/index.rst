@@ -15,6 +15,7 @@ It allows users to setup a series of *projects* and *tasks* in an organised mann
    Usage/req1
    Usage/req2
    elements
+   usage
    
 .. note::
 
