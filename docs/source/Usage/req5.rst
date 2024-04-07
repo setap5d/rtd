@@ -13,11 +13,8 @@ The account can be accessed from all devices with no restrictions assuming the s
 Consequences or side-effects:
 -----------------------------
 
-- The user may not want their data stored due to not knowing what may be done 
-with it, resulting in potential law implications.
+- The user may not want their data stored due to not knowing what may be done with it, resulting in potential law implications.
 
-- If unauthorised access were to occur, we would be held responsible, and 
-enforcing user security can be costly/difficult.
+- If unauthorised access were to occur, we would be held responsible, and enforcing user security can be costly/difficult.
 
-- Storing user data can get expensive despite the cost-friendly options 
-Firebase provides.
+- Storing user data can get expensive despite the cost-friendly options Firebase provides.

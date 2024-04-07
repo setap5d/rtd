@@ -1,4 +1,4 @@
-Requirments
+Requirements
 ===========
 
 - You need to have a Flutter SDK version above 3.2.6 and Dart 3.3.0 installed as it's a prerequisite for Flutter.
