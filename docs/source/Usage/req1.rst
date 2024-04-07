@@ -7,7 +7,7 @@ Users will be able to create new projects (see A).
 .. image:: ../images/req1/sec1/image.png
     :width: 600px
     :align: center
-    :alt: Image of the project  page
+    :alt: Image of the project page
 
 Initially, the project page will have no projects, the user can click the "+" button to create a new project. 
 This will open a modal where the user can enter the project title, deadline, and team leader. 
@@ -17,12 +17,14 @@ This will open a modal where the user can enter the project title, deadline, and
     :align: center
     :alt: Image of the modal to create a new project
 
-Once the user enters the desired details of the project, they can click the "Create" button to create the project. The project will then be displayed on the project page.
+Once the user enters the desired details of the project, they can click the "Create" button to create the project.
 
 .. image:: ../images/req1/sec1/image3.png
     :width: 600px
     :align: center
     :alt: Image of the project page with a new project
+
+The project will then be displayed on the project page.
 
 Users will be able to view multiple assigned projects at any one time.
 -----------------------------------------------------------------------
