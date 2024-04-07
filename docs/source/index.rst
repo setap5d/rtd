@@ -9,7 +9,7 @@ It allows users to setup a series of *projects* and *tasks* in an organised mann
    :maxdepth: 2
    :caption: Contents:
 
-   Requirments/requirements
+   Requirements/requirements
    Usage/installation
    Usage/defs
    Usage/req1
