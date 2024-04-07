@@ -14,12 +14,11 @@ Users will be able to delete projects.
 ---------------------------------------
 
 Projects will have a title (string), deadline (date), description (string), and list of team members (see C) (list).
---------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
 
 Consequences or side-effects: 
 -----------------------------
 
-If a user has too many projects, it could cause the application to slow 
-down on the projects page due to the number of widgets being displayed to them.
+- If a user has too many projects, it could cause the application to slow down on the projects page due to the number of widgets being displayed to them.
 
-Storing more projects on our servers would cost more money as we store more data.
+- Storing more projects on our servers would cost more money as we store more data.

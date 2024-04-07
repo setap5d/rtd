@@ -5,10 +5,9 @@ Welcome to Project Master's documentation!
 
 It allows users to setup a series of *projects* and *tasks* in an organised manner.
 
-Contents
---------
-
 .. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
    requirements
    usage/index
