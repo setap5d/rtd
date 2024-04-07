@@ -7,7 +7,7 @@ Users will be able to create new projects (see A).
 .. image:: ../images/req1/sec1/image.png
     :width: 600px
     :align: center
-    :alt: Image of the project creation page
+    :alt: Image of the project  page
 
 Initially, the project page will have no projects, the user can click the "+" button to create a new project. 
 This will open a modal where the user can enter the project title, deadline, and team leader. 
@@ -27,8 +27,43 @@ Once the user enters the desired details of the project, they can click the "Cre
 Users will be able to view multiple assigned projects at any one time.
 -----------------------------------------------------------------------
 
+.. image:: ../images/req1/sec2/image.png
+    :width: 600px
+    :align: center
+    :alt: Image of the project page with multiple projects
+
+As the user creates more projects, they will be displayed on the project page.
+
 Users will be able to change the name and deadline of a project.
 ----------------------------------------------------------------
+
+.. image:: ../images/req1/sec3/image.png
+    :width: 600px
+    :align: center
+    :alt: Image of the project page with the edit project modal
+
+Each project has a dropdown menu that can be accessed by clicking the three dots on the right side of the project widget.
+This will open a dropdown menu with the options to edit the project.
+Selecting the "Edit" option will open a modal where the user can change the project title and deadline.
+
+.. image:: ../images/req1/sec3/image2.png
+    :width: 600px
+    :align: center
+    :alt: Image of the modal to edit a project
+
+.. image:: ../images/req1/sec3/image3.png
+    :width: 600px
+    :align: center
+    :alt: Image of the project page with the updated project
+
+Once the user has made the desired changes, they can click the "Save" button to save the changes.
+
+.. image:: ../images/req1/sec3/image4.png
+    :width: 600px
+    :align: center
+    :alt: Image of the project page with the updated project
+
+This will update the project widget on the project page with the new details.
 
 Users will be able to delete projects.
 ---------------------------------------
