@@ -54,7 +54,7 @@ Selecting the "Edit" option will open a modal where the user can change the proj
 .. image:: ../images/req1/sec3/image3.png
     :width: 600px
     :align: center
-    :alt: Image of the project page with the updated project
+    :alt: Image of the modal with the updated project details
 
 Once the user has made the desired changes, they can click the "Save" button to save the changes.
 
@@ -63,13 +63,34 @@ Once the user has made the desired changes, they can click the "Save" button to 
     :align: center
     :alt: Image of the project page with the updated project
 
-This will update the project widget on the project page with the new details.
+This will update the project widget on the project page and the database with the new details.
 
 Users will be able to delete projects.
 ---------------------------------------
 
+.. image:: ../images/req1/sec4/image.png
+    :width: 600px
+    :align: center
+    :alt: Image of the project page with the dropdown menu open
+
+.. image:: ../images/req1/sec4/image2.png
+    :width: 600px
+    :align: center
+    :alt: Image of the project page with the delete project modal
+
+Once the delete option is selected, a modal will open asking the user to confirm the deletion of the project.
+
+.. image:: ../images/req1/sec4/image3.png
+    :width: 600px
+    :align: center
+    :alt: Image of the project page with the project deleted
+
+Selecting the "Yes" option will delete the project from the project page and database.
+
 Projects will have a title (string), deadline (date), description (string), and list of team members (see C) (list).
 --------------------------------------------------------------------------------------------------------------------
+
+This can be seen above when creating the project, the user can enter the project title, deadline, and team leader and edit these at any time.
 
 Consequences or side-effects: 
 -----------------------------
