@@ -10,11 +10,10 @@ It allows users to setup a series of *projects* and *tasks* in an organised mann
    :caption: Contents:
 
    requirements
-   usage/index
-      usage/installation
-      usage/defs
-      usage/req1
-      usage/req2
+   Usage/installation
+   Usage/defs
+   Usage/req1
+   Usage/req2
    elements
    
 .. note::
