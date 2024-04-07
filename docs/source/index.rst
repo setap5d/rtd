@@ -9,10 +9,13 @@ Contents
 --------
 
 .. toctree::
-   :caption: Contents:
 
    requirements
-   usage
+   usage/index
+      usage/installation
+      usage/defs
+      usage/req1
+      usage/req2
    elements
    
 .. note::
