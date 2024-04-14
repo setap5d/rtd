@@ -6,7 +6,7 @@ Tasks (see B) will have a title (string), deadline (date), description (string),
 
 After opening a project from the projects page, the user will be able to see all the tasks that are associated with that project.
 
-.. image:: ../images/req2/sec1/image.png
+.. image:: ../images/req2/sec1/image1.png
     :width: 600px
     :align: center
     :alt: Image of the task screen
