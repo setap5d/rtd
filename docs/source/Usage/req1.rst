@@ -89,7 +89,7 @@ Once the delete option is selected, a modal will open asking the user to confirm
 
 Selecting the "Yes" option will delete the project from the project page and database.
 
-Projects will have a title (string), deadline (date), description (string), and list of team members (see C) (list).
+Projects will have a title (string), deadline (date), and project leader (list).
 --------------------------------------------------------------------------------------------------------------------
 
 This can be seen above when creating the project, the user can enter the project title, deadline, and team leader and edit these at any time.
