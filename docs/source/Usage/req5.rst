@@ -36,8 +36,9 @@ Once all fields have been filled out, the user will then click the "Create Accou
     :align: center
     :alt: Image of the account creation screen with all fields filled out
 
+If the account creation is successful, the user will be allowed to login with their given details.
 
- Users will be able to access the app using previously created account email and password
+Users will be able to access the app using previously created account email and password
 ------------------------------------------------------------------------------------------
 
 After an account has been created, it will be stored in the cloud database (Firebase) and can be accessed from any device with an internet connection.
@@ -46,8 +47,6 @@ Users will be able to change profile data related to their account in app
 --------------------------------------------------------------------------
 
 Upon visiting the profile page after logging in, the user will be able to change all of their account details.
-
-
 
 Consequences or side-effects:
 -----------------------------

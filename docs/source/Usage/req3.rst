@@ -2,7 +2,7 @@ Be able to manage user profiles within the application
 ======================================================
 
 Users (see C) will have a first name (string), last name (string), email (string), and skills (optional string) associated with them.
--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
 
 Upon account creation, team member will have an email and name associated with them.
 
