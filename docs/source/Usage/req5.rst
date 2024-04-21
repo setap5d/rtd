@@ -1,8 +1,18 @@
-Be able to create a new account
+Be able to manage user accounts
 ===============================
 
-In order for an account to be created, the user will have to provide their: first name (string), last name (string), email address (string) and password (string), all aforementioned fields are mandatory in order for the account to be successfully stored in the database.
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Accounts will be made up of first name (string), last name (string), email address (string) and password (string).
+-------------------------------------------------------------------------------------------------------------------
+
+When creating an account, the user will be prompted to enter their first name, last name, email address and password.
+
+.. image:: ../images/req5/sec1/image2.png
+    :width: 600px
+    :align: center
+    :alt: Image of the account creation screen
+
+Users will be able to create new accounts
+------------------------------------------
 
 When first launching the application, the user will be greeted with the login page, where they will have the option to create a new account.
 
@@ -26,18 +36,18 @@ Once all fields have been filled out, the user will then click the "Create Accou
     :align: center
     :alt: Image of the account creation screen with all fields filled out
 
-When the account has been created, the user will be directed to the login page where they will then enter the details for their newly created account.
-------------------------------------------------------------------------------------------------------------------------------------------------------
 
-If their inputs are valid, the account will be created and the user will be directed to the login page 
-where they will then enter the details for their newly created account in order to login.
-
-Otherwise, the user will remain on the account creation screen until all fields are filled out correctly and submitted.
-
-The account can be accessed from all devices with no restrictions assuming the same login details are used.
------------------------------------------------------------------------------------------------------------
+ Users will be able to access the app using previously created account email and password
+------------------------------------------------------------------------------------------
 
 After an account has been created, it will be stored in the cloud database (Firebase) and can be accessed from any device with an internet connection.
+
+Users will be able to change profile data related to their account in app
+--------------------------------------------------------------------------
+
+Upon visiting the profile page after logging in, the user will be able to change all of their account details.
+
+
 
 Consequences or side-effects:
 -----------------------------

@@ -1,7 +1,7 @@
 Be able to assign tickets to tasks
 ==================================
 
-Team members who are assigned to a task are able to create tickets (see D) for this task.
+Users who are assigned to a task are able to create tickets (see D) for this task.
 --------------------------------------------------------------------------------------------
 
 After creating a task, the user will be able to click on each task on the tasks screen to expand it and view the task description
@@ -25,9 +25,6 @@ Tickets can be viewed and worked on by anyone who has access to view the task.
 ------------------------------------------------------------------------------
 
 When a ticket is created, it will be displayed on the task screen under the task description until it is resolved.
-
-Once the ticket is resolved, it should notify the assignees of the task.
--------------------------------------------------------------------------
 
 Consequences or side-effects: 
 -----------------------------

@@ -1,7 +1,7 @@
 Be able to manage user profiles within the application
 ======================================================
 
-Team members (see C) will have a name (string), email (string), and skills (optional string) associated with them.
+Users (see C) will have a first name (string), last name (string), email (string), and skills (optional string) associated with them.
 -------------------------------------------------------------------------------------------------------------------
 
 Upon account creation, team member will have an email and name associated with them.
@@ -26,7 +26,7 @@ Otherwise feedback will be given to the user.
     :align: center
     :alt: Image of the profile screen with feedback
 
-Team members will be able to optionally store phone number (float) and profile picture (image).
+Users will be able to optionally store phone number (float) and profile picture (image).
 -----------------------------------------------------------------------------------------------
 
 Storing a phone number can be seen above. The user will be able to input a phone number on the profile screen and save it to the database.
@@ -39,10 +39,10 @@ Storing a profile picture is a little different. On the profile screen the user 
 
 The user will then be able to upload the image to the database with the designated button (The upload button must be used otherwise the image will not be saved).
 
-Team members will be able to view stored data.
+Users will be able to view stored data.
 ----------------------------------------------
 
-Team members will be able to change stored data upon visiting the profile page.
+Users will be able to change stored data upon visiting the profile page.
 -------------------------------------------------------------------------------
 
 As seen above, the user will be able to change their name, email, skills, profile picture, and phone number through the profile screen.

@@ -25,12 +25,12 @@ None of these fields are required. Once a task is created, the user will be brou
     :align: center
     :alt: Image of the task screen with a new task
 
-Project leaders will be able to create new tasks.
+Users will be able to create new tasks.
 -------------------------------------------------
 
 This can be seen above where the user is able to create a new task. The user will be able to see all the tasks that are associated with that project.
 
-Project leaders will be able to change the title, deadline, description and assignees.
+Users will be able to change the title, deadline, description and assignees.
 --------------------------------------------------------------------------------------
 
 Once a task has been created, the user can click the 3 dots on the right side of the task to open a dropdown menu. From here the user can click "Edit Task" to open the task edit modal.
