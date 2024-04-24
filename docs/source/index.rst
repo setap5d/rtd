@@ -14,10 +14,8 @@ It allows users to setup a series of *projects* and *tasks* in an organised mann
    Usage/defs
    Usage/req1
    Usage/req2
-   Usage/req3
    Usage/req4
    Usage/req5
-   Usage/req6
    Usage/req7
    elements
    

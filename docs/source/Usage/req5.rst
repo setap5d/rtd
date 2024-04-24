@@ -43,10 +43,18 @@ Users will be able to access the app using previously created account email and 
 
 After an account has been created, it will be stored in the cloud database (Firebase) and can be accessed from any device with an internet connection.
 
-Users will be able to change profile data related to their account in app
---------------------------------------------------------------------------
+Users (see 3) will be able to optionally store skills (string), phone number (float), and profile picture (image)
+------------------------------------------------------------------------------------------------------------------
 
-Upon visiting the profile page after logging in, the user will be able to change all of their account details.
+Storing a phone number can be seen above. The user will be able to input a phone number on the profile screen and save it to the database.
+Storing a profile picture is a little different. On the profile screen the user will be able to select an image from their device's file system. Once selected, the image will be displayed on the screen.
+
+.. image:: ../images/req3/sec2/image1.png
+    :width: 600px
+    :align: center
+    :alt: Image of the profile screen with a profile picture
+
+The user will then be able to upload the image to the database with the designated button (The upload button must be used otherwise the image will not be saved).
 
 Consequences or side-effects:
 -----------------------------
