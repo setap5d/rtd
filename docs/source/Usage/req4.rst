@@ -21,6 +21,13 @@ This will open a modal where the user can enter the ticket name before submittin
 
 After a ticket is created, it will be displayed on the task screen under the task description.
 
+.. image:: ../images/req4/sec1/image2.png
+    :width: 600px
+    :align: center
+    :alt: Image of the task screen with an expanded task and the create ticket modal
+
+Any number of tickets can be created for a task.
+
 Tickets can be viewed and worked on by anyone who has access to view the task.
 ------------------------------------------------------------------------------
 

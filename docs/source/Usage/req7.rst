@@ -24,9 +24,13 @@ After the user decides which settings match their preference, they can click the
     :align: center
     :alt: Image of the settings screen with edited settings
 
+The application must be then be restarted to apply the new settings.
+
 When the user logs in on a separate device their preferred settings will be correctly applied.
 ----------------------------------------------------------------------------------------------
 
+Once the user has chosen their desired settings, these will be saved in the database. 
+When the user logs in to their account on any device, their preferred settings will be read from the database and applied.
 
 Consequence or side-effect:
 ---------------------------
