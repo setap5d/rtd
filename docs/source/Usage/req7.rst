@@ -1,5 +1,5 @@
-Be able Manage user settings in Database
-========================================
+Requirement 5: Be able Manage user settings in Database
+=========================================================
 
 Once the user has logged in to their accounts they will be able to change the settings for their own account.
 --------------------------------------------------------------------------------------------------------------
