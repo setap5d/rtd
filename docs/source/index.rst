@@ -11,13 +11,13 @@ It allows users to setup a series of *projects* and *tasks* in an organised mann
 
    Setup/requirements
    Setup/installation
+   vcs
    Usage/defs
    Usage/req1
    Usage/req2
    Usage/req4
    Usage/req5
    Usage/req7
-   elements
    
 .. note::
 
