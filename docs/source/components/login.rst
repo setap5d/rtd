@@ -243,6 +243,7 @@ The RegisterScreen class is a stateless widget that returns a form with text fie
 It is used to register a new user to the database.
 
 .. code-block:: dart
+
     class RegisterScreen extends StatelessWidget {
     const RegisterScreen({Key? key}) : super(key: key);
 
@@ -260,6 +261,7 @@ The placeholder list is used to store the user's projects.
 
 
 .. code-block:: dart
+
     void registerNewAccount() async {
       try {
         final fullName =
@@ -296,6 +298,7 @@ It begins by creating a fullName variable that takes the firstName and lastName 
 This variable is then checked to see if it already exists in the database, if so it returns an alert error. 
 
 .. code-block:: dart
+
         final emailSnapshot = await FirebaseFirestore.instance
             .collection('Profiles')
             .doc(emailController.text)
@@ -371,7 +374,7 @@ Here, after all checks have passed, the user is registered.
 This means that the user's inputs are stored in the Firestore database under the 'Profiles' collection.
 Once registration is successful, the user is navigated back to the LoginScreen so they can login with their account details.
 
-.. code-blocks:: dart
+.. code-block:: dart
 
     void switchToLoginScreen() {
       Navigator.pop(context);
