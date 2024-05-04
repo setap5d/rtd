@@ -33,7 +33,7 @@ imports
   import 'shared.dart';
   import 'package:cloud_firestore/cloud_firestore.dart';
 
-The flutter material import is required for the Flutter framework. The three firebase imports are required for the Firebase authentication and Firestore database. The project_format.dart file is imported to format the project details. The shared.dart imports two functions that are used by the file.
+The flutter material import is required for the Flutter framework. The firebase import is required for the Firestore database. The project_format.dart file is imported to format the project details. The shared.dart imports two functions that are used by the file.
 
 .. code-block:: dart
 
@@ -57,10 +57,64 @@ The flutter material import is required for the Flutter framework. The three fir
     _ProjectTileState createState() => _ProjectTileState();
   }
 
-The project file class is to inititialize the fromtend of a project's information. It takes the "The ProjectTile class is used to initialize the frontend representation of a project's information in a Flutter application. It incorporates an instance of the Project class, which manages the project's backend data. Alongside, it handles a deletion functionality through the onDelete callback, manages a list of project IDs (projectIDs), and utilizes a specific project index (projectIndex) to differentiate between projects. The email parameter represents the contact information of the project leader or manager." This override of createState() returns an instance of _ProjectTileState, which actually display the project.
+The project file class is to inititialise the frontend of a project's information. It takes the "The ProjectTile class is used to initialize the frontend representation of a project's information in a Flutter application. It incorporates an instance of the Project class, which manages the project's backend data. Alongside, it handles a deletion functionality through the onDelete callback, a list of project IDs the user is part of (projectIDs), and utilizes a specific project index (projectIndex) to differentiate between projects. The email parameter is used to show that the user is part of the created project. This override of createState() returns an instance of _ProjectTileState, which actually display the project.
 
 .. code-block:: dart
-class _ProjectTileState extends State<ProjectTile> {
+
+  class _ProjectTileState extends State<ProjectTile> {
+  
+    Future<void> showAddAssigneesDialog(BuildContext context) async  {...}
+    void showErrorDialog(String message) {...}
+    Future<void> showEditDialog(BuildContext context) async {...}
+    @override
+    Widget build(BuildContext context) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.inversePrimary,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Project Name: ${widget.project.projectName}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Deadline: ${widget.project.deadline}',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      widget.project.leader,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Align(...)
+          ],
+        ),
+      );
+    }
+
+The _ProjectTileState is a state of the ProjectTile class which display the project to the screen. It has the showAddAssigneesDialog and showEditDialog used by the Align widget, while the showErrorDialog is used by the 2 methods mentioned.
+
+
+.. code-block:: dart
 
   Future<void> showAddAssigneesDialog(BuildContext context) async {
     TextEditingController emailController = TextEditingController();
@@ -168,6 +222,11 @@ class _ProjectTileState extends State<ProjectTile> {
     );
   }
 
+The showAddAssigneesDialog method provides a user interface for adding a new assignee to a project by entering an email address. It checks for the validity of the email and whether the user is already assigned to the project, and updates the Firebase database accordingly. 
+
+
+.. code-block:: dart
+
   void showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -187,6 +246,11 @@ class _ProjectTileState extends State<ProjectTile> {
       },
     );
   }
+
+The showErrorDialog method provides a consistent way for the application to handle and display error messages to the user.
+
+
+.. code-block:: dart
 
   Future<void> showEditDialog(BuildContext context) async {
     DateTime selectedDate = DateTime.now();
@@ -298,46 +362,11 @@ class _ProjectTileState extends State<ProjectTile> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.inversePrimary,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Center(
-                  child: Text(
-                    'Project Name: ${widget.project.projectName}',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    'Deadline: ${widget.project.deadline}',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    widget.project.leader,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Align(
+The showEditDialog method provides a comprehensive interface for editing project details. The changes are made through the selectedDate variable which holds the project's deadline, the projectNameController which hold the project name, leaderController holds the name of the project's leader. When the changes are saved, then updates the Firestore database with the new data if the input fields are valid.
+
+.. code-block:: dart
+
+      Align(
             alignment: Alignment.bottomRight,
             child: PopupMenuButton<String>(
               icon: const Icon(Icons.more_vert),
@@ -383,11 +412,13 @@ class _ProjectTileState extends State<ProjectTile> {
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
+The Align widget in the _ProjectTileState class serves as a layout tool to precisely place the PopupMenuButton within the user interface of the ProjectTile widget. It ensures that the menu button is always located in the bottom-right corner of the tile, providing a consistent and intuitive interaction point for accessing additional options related to the project.
+
+
+project_page.dart
+--------------------
+
+
 
 
 
