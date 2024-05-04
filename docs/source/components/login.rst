@@ -1,6 +1,25 @@
 Login page - main.dart
 ======================
 
+imports
+-------
+
+.. code-block:: dart
+
+    import 'package:flutter/material.dart';
+    import 'package:firebase_core/firebase_core.dart';
+    import 'package:firebase_auth/firebase_auth.dart';
+    import 'package:cloud_firestore/cloud_firestore.dart';
+    import 'firebase_options.dart';
+    import 'project_format.dart';
+    import 'navigation.dart';
+
+The flutter material import is required for the Flutter framework.
+The three firebase imports are required for the Firebase authentication and Firestore database.
+The firebase_options.dart file is imported to initialize Firebase.
+The project_format.dart file is imported to format the project details.
+The navigation.dart file is imported to navigate to the NavigationPage class.
+
 main
 -----
 
