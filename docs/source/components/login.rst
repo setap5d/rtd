@@ -5,7 +5,6 @@ MainApp
 -------
 
 .. code-block:: dart
-    :emphasize-lines: 12,13,14,15,16,17,18
 
     Future<void> main() async {
         WidgetsFlutterBinding.ensureInitialized();
