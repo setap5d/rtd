@@ -24,6 +24,7 @@ It allows users to setup a series of *projects* and *tasks* in an organised mann
    components/project
    components/task
    components/settings
+   components/firebase
    
 .. note::
 

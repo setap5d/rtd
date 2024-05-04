@@ -166,6 +166,315 @@ It returns a map of the user's settings.
         Map<String, dynamic> settings = {};
 
 The build method begins by initializing the emailController and passwordController text editing controllers.
-The controllers store the user input for the login.
+The controllers store the user input for the login and are attached to TextFormField widgets.
 The other values are retrieved from Firebase once the user passes the log in checks.
 
+.. code-block:: dart
+
+    void switchToPasswordReset() {
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PasswordResetPage()),
+        );
+    }
+
+The switchToPasswordReset method is used to call the PasswordResetPage class when the user clicks on the 'Forgot Password?' button.
+
+
+
+Login Details Check - checkLoginDetails()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: dart
+
+    void checkLoginDetails() async {
+      final profileSnapshot = await FirebaseFirestore.instance
+          .collection('Profiles')
+          .doc(emailController.text)
+          .get();
+
+
+This method is used to check the user's login details against the Firestore database.
+It begins by retrieving the user's profile snapshot from the Firestore database using the emailController text as the document ID.
+
+.. code-block:: dart
+
+      if (profileSnapshot.exists) {
+        if (profileSnapshot.get('Password') == passwordController.text) {
+          projectIDs = profileSnapshot.get('Project IDs');
+          projects = [];
+          for (int i = 0; i < projectIDs.length; i++) {
+            Project newProject = Project();
+            final projectSnapshot = await FirebaseFirestore.instance
+                .collection('Projects')
+                .doc(projectIDs[i])
+                .get();
+            newProject.projectName = projectSnapshot.get('Title');
+            newProject.deadline = projectSnapshot.get('Deadline');
+            newProject.leader = projectSnapshot.get('Project Leader');
+            projects.add(newProject);
+          }
+          profDetails = await getProfileInfo(emailController.text);
+          settings = await getSettingsFromFireBase(emailController.text);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NavigationPage(
+                email: emailController.text,
+                projectIDs: projectIDs,
+                projects: projects,
+                profDetails: profDetails,
+                settings: settings,
+                selectedIndex: 1,
+              ),
+            ),
+          );
+        } 
+        
+If the user's profile exists in the database and the password matches the password stored in the database, 
+the user's project IDs and projects along with the attributes are retrieved from the database.
+
+If the email does not exist in the database, or the password does not match the password stored in the database, an error is returned to the user.
+
+RegisterScreen
+--------------
+
+The RegisterScreen class is a stateless widget that returns a form with text fields that require user input.
+It is used to register a new user to the database.
+
+.. code-block:: dart
+    class RegisterScreen extends StatelessWidget {
+    const RegisterScreen({Key? key}) : super(key: key);
+
+    @override
+    Widget build(BuildContext context) {
+        final TextEditingController firstNameController = TextEditingController();
+        final TextEditingController lastNameController = TextEditingController();
+        final TextEditingController emailController = TextEditingController();
+        final TextEditingController passwordController = TextEditingController();
+        final List<String> placeholder = [];
+
+The build method begins by initializing the firstNameController, lastNameController, emailController, and passwordController text editing controllers. 
+These will take inputs from the user and are attached to TextFormField widgets, they define the user's account details.
+The placeholder list is used to store the user's projects.
+
+
+.. code-block:: dart
+    void registerNewAccount() async {
+      try {
+        final fullName =
+            '${firstNameController.text} ${lastNameController.text}';
+
+        final fullNameSnapshot = await FirebaseFirestore.instance
+            .collection('Profiles')
+            .where('Full Name', isEqualTo: fullName)
+            .get();
+
+        if (fullNameSnapshot.docs.isNotEmpty) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Error'),
+                content: const Text('This name is already registered.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+          return;
+        }
+
+The registerNewAccount method is used to register a new user to the Firestore database.
+It begins by creating a fullName variable that takes the firstName and lastName inputs and concatenates them.
+This variable is then checked to see if it already exists in the database, if so it returns an alert error. 
+
+.. code-block:: dart
+        final emailSnapshot = await FirebaseFirestore.instance
+            .collection('Profiles')
+            .doc(emailController.text)
+            .get();
+
+        if (emailSnapshot.exists) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Error'),
+                content: const Text('Email is already in use.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+          return;
+        }
+
+Next, the email input is checked to see if it already exists and also returns an alert error if it does.
+
+.. code-block:: dart
+
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+    );
+
+    await FirebaseFirestore.instance
+        .collection('Profiles')
+        .doc(emailController.text)
+        .set({
+    'First Name': firstNameController.text,
+    'Last Name': lastNameController.text,
+    'Password': passwordController.text,
+    'Phone Number': '',
+    'Skills': '',
+    'Project IDs': placeholder
+    });
+    await FirebaseFirestore.instance
+        .collection('Profiles')
+        .doc(emailController.text)
+        .collection('User')
+        .doc('Settings')
+        .set({
+    'Display Mode': 'Light Mode',
+    'Project Deadline Notifications': true,
+    'Task Deadline Notifications': true,
+    'Ticket Notifications': true
+    });
+    await FirebaseFirestore.instance
+        .collection('Profiles')
+        .doc(emailController.text)
+        .collection('User')
+        .doc('ProfilePic')
+        .set({"Download URL": null});
+
+    Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      } catch (e) {}
+    }
+
+Here, after all checks have passed, the user is registered.
+This means that the user's inputs are stored in the Firestore database under the 'Profiles' collection.
+Once registration is successful, the user is navigated back to the LoginScreen so they can login with their account details.
+
+.. code-blocks:: dart
+
+    void switchToLoginScreen() {
+      Navigator.pop(context);
+    }
+
+This method is used to navigate back to the LoginScreen from the register page.
+
+.. code-block:: dart
+
+    return Scaffold(
+        body: SingleChildScrollView(
+
+            ...
+
+            child: TextFormField(
+                controller: firstNameController,
+                decoration: const InputDecoration(
+                    labelText: 'First Name',
+                    prefixIcon: Icon(Icons.person),
+                ),
+            ),
+
+            ...
+
+            child: TextFormField(
+                controller: lastNameController,
+                decoration: const InputDecoration(
+                    labelText: 'Last Name',
+                    prefixIcon: Icon(Icons.person),
+                ),
+            ),
+
+            ...
+
+            TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email),
+                    ),
+            ),
+
+            ...
+
+            TextFormField(
+                controller: passwordController,
+                decoration: const InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.lock),
+                ),
+                obscureText: true,
+            ),
+
+            ...
+
+            TextFormField(
+                decoration: const InputDecoration(
+                    labelText: 'Confirm Password',
+                    prefixIcon: Icon(Icons.lock),
+                ),
+                obscureText: true,
+            ),
+
+            ...
+
+This part of the scaffold is used to create the inputs for the register form. It requires the first name, last name,
+email, password, and confirm password fields to be filled out by the user.
+
+.. code-block:: dart
+
+    child: ElevatedButton(
+        onPressed: (registerNewAccount),
+        child: const Text(
+        'Register',
+
+        ...
+    
+A 'Register' button is provided for the user to submit their details and register their account.
+This button calls the registerNewAccount method when pressed.
+
+.. code-block:: dart
+
+    Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+        const Text(
+            'Already have an account? ',
+            style: TextStyle(
+            fontSize: 20,
+            ),
+        ),
+        GestureDetector(
+            onTap: (switchToLoginScreen),
+            child: const Text(
+            'Login Here',
+            style: TextStyle(fontSize: 20, color: Colors.blue),
+            ),
+        ),
+        ],
+    ),
+
+At the bottom of the register form, a button text is provided for users who already have an account
+so that they can return to the login screen.
+
+PasswordResetPage
+-----------------
