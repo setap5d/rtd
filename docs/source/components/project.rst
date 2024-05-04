@@ -57,7 +57,7 @@ The flutter material import is required for the Flutter framework. The firebase 
     _ProjectTileState createState() => _ProjectTileState();
   }
 
-The project file class is to inititialise the frontend of a project's information. It takes the "The ProjectTile class is used to initialize the frontend representation of a project's information in a Flutter application. It incorporates an instance of the Project class, which manages the project's backend data. Alongside, it handles a deletion functionality through the onDelete callback, a list of project IDs the user is part of (projectIDs), and utilizes a specific project index (projectIndex) to differentiate between projects. The email parameter is used to show that the user is part of the created project. This override of createState() returns an instance of _ProjectTileState, which actually display the project.
+The ProjectTile class is to inititialise the frontend of a project's information. It is used to initialize the frontend representation of a project's information. It incorporates an instance of the Project class, which manages the project's backend data. Alongside, it handles a deletion functionality through the onDelete callback, a list of project IDs the user is part of (projectIDs), and utilizes a specific project index (projectIndex) to differentiate between projects. The email parameter is used to show that the user is part of the created project. This override of createState() returns an instance of _ProjectTileState, which actually display the project.
 
 .. code-block:: dart
 
@@ -424,31 +424,31 @@ project_page.dart
 
 .. code-block:: dart  
 
-class ProjectsPage extends StatefulWidget {
-  const ProjectsPage(
-      {Key? key,
-      required this.title,
-      required this.email,
-      required this.projectIDs,
-      required this.projects,
-      required this.settings,
-      required this.profDetails,
-      required this.activeColorScheme})
-      : super(key: key);
+  class ProjectsPage extends StatefulWidget {
+    const ProjectsPage(
+        {Key? key,
+        required this.title,
+        required this.email,
+        required this.projectIDs,
+        required this.projects,
+        required this.settings,
+        required this.profDetails,
+        required this.activeColorScheme})
+        : super(key: key);
+  
+    final String title;
+    final String email;
+    final List<dynamic> projectIDs;
+    final List<Project> projects;
+    final Map<String, dynamic> settings;
+    final List<dynamic> profDetails;
+    final ColorScheme activeColorScheme;
+  
+    @override
+    State<ProjectsPage> createState() => _ProjectsPageState();
+  }
 
-  final String title;
-  final String email;
-  final List<dynamic> projectIDs;
-  final List<Project> projects;
-  final Map<String, dynamic> settings;
-  final List<dynamic> profDetails;
-  final ColorScheme activeColorScheme;
-
-  @override
-  State<ProjectsPage> createState() => _ProjectsPageState();
-}
-
-This class ProjectsPage is used to display the list of projects the user created or is assigned to, the colour of the user interface depends on the color schemes selected. It contains the attributes title which is used as the header of the page, the user's email address, a list of the project ids which are used in the database , the list of project that only accepts instances of the class Project, settings contains the colorsheme information, profDtails, activeColorScheme which applies the colour scheme selected by the user.
+This class ProjectsPage is used to display the list of projects the user created or is assigned to, the colour of the user interface depends on the color schemes selected. It contains the attributes title which is used as the header of the page, the user's email address, a list of the project ids which are used in the database , the list of project that only accepts instances of the class Project, settings contains the colorsheme information, profDetails, activeColorScheme which applies the colour scheme selected by the user.
 
 .. code-block:: dart
 
@@ -594,109 +594,109 @@ The deleteProject takes an instance of the class Project and removes it from the
 
 .. code-block:: dart
 
-Future<void> showAddProjectDialog() async {
-    DateTime selectedDate = DateTime.now();
-    Project newProject = Project();
-
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Add Project'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  onChanged: (value) {
-                    newProject.projectName = value;
-                  },
-                  decoration: const InputDecoration(labelText: 'Project Name'),
-                ),
-                const SizedBox(height: 16.0),
-                const Text(
-                  'Deadline:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8.0),
-                TextButton(
-                  onPressed: () async {
-                    final DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: selectedDate,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2101),
-                    );
-
-                    if (pickedDate != null && pickedDate != selectedDate) {
-                      selectedDate = pickedDate;
-                      newProject.deadline =
-                          '${pickedDate.day} ${getMonthName(pickedDate.month)} ${pickedDate.year}';
-                    }
-                  },
-                  child: const Text(
-                    'Select Deadline',
+  Future<void> showAddProjectDialog() async {
+      DateTime selectedDate = DateTime.now();
+      Project newProject = Project();
+  
+      await showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Add Project'),
+            content: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    onChanged: (value) {
+                      newProject.projectName = value;
+                    },
+                    decoration: const InputDecoration(labelText: 'Project Name'),
                   ),
-                ),
-                const SizedBox(height: 16.0),
-                TextField(
-                  onChanged: (value) {
-                    newProject.leader = 'Leader: $value';
-                  },
-                  decoration: const InputDecoration(labelText: 'Leader'),
-                ),
-              ],
+                  const SizedBox(height: 16.0),
+                  const Text(
+                    'Deadline:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8.0),
+                  TextButton(
+                    onPressed: () async {
+                      final DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: selectedDate,
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2101),
+                      );
+  
+                      if (pickedDate != null && pickedDate != selectedDate) {
+                        selectedDate = pickedDate;
+                        newProject.deadline =
+                            '${pickedDate.day} ${getMonthName(pickedDate.month)} ${pickedDate.year}';
+                      }
+                    },
+                    child: const Text(
+                      'Select Deadline',
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextField(
+                    onChanged: (value) {
+                      newProject.leader = 'Leader: $value';
+                    },
+                    decoration: const InputDecoration(labelText: 'Leader'),
+                  ),
+                ],
+              ),
             ),
-          ),
-          actions: <Widget>[
-            TextButton(
-                child: const Text('Save'),
-                onPressed: () async {
-                  if (await validateProjectDetails(newProject)) {
-                    try {
-                      setState(() {
-                        widget.projects.add(newProject);
-                      });
-                      final projID = FirebaseFirestore.instance
-                          .collection('Projects')
-                          .doc();
-                      await projID.set({
-                        "Title": newProject.projectName,
-                        "Deadline": newProject.deadline,
-                        "Project Leader": newProject.leader,
-                      });
-                      widget.projectIDs.add(projID.id);
-                      await FirebaseFirestore.instance
-                          .collection('Profiles')
-                          .doc(widget.email)
-                          .update({"Project IDs": widget.projectIDs});
-                      await projID
-                          .collection('Tasks')
-                          .doc("Placeholder Doc")
-                          .set({"Title": "Placeholder"});
-                      await projID
-                          .collection('Tasks')
-                          .doc("Placeholder Doc")
-                          .collection('Tickets')
-                          .doc('Placeholder Doc')
-                          .set({"Title": "Placeholder"});
-                      Navigator.of(context).pop();
-                    } catch (e) {
-                      showErrorDialog(
-                          'Failed to save project data. Please try again later.');
+            actions: <Widget>[
+              TextButton(
+                  child: const Text('Save'),
+                  onPressed: () async {
+                    if (await validateProjectDetails(newProject)) {
+                      try {
+                        setState(() {
+                          widget.projects.add(newProject);
+                        });
+                        final projID = FirebaseFirestore.instance
+                            .collection('Projects')
+                            .doc();
+                        await projID.set({
+                          "Title": newProject.projectName,
+                          "Deadline": newProject.deadline,
+                          "Project Leader": newProject.leader,
+                        });
+                        widget.projectIDs.add(projID.id);
+                        await FirebaseFirestore.instance
+                            .collection('Profiles')
+                            .doc(widget.email)
+                            .update({"Project IDs": widget.projectIDs});
+                        await projID
+                            .collection('Tasks')
+                            .doc("Placeholder Doc")
+                            .set({"Title": "Placeholder"});
+                        await projID
+                            .collection('Tasks')
+                            .doc("Placeholder Doc")
+                            .collection('Tickets')
+                            .doc('Placeholder Doc')
+                            .set({"Title": "Placeholder"});
+                        Navigator.of(context).pop();
+                      } catch (e) {
+                        showErrorDialog(
+                            'Failed to save project data. Please try again later.');
+                      }
                     }
-                  }
-                }),
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+                  }),
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
 
 
 The showAddProjectDialog method in the _ProjectsPageState class provides a user interface for adding new projects. It displays a dialog where users can enter details such as the project name, leader, and deadline. The method includes validation to ensure the data entered is correct and unique, and upon successful validation, it saves the new project information to a Firestore database. Additionally, it updates the UI and the local state of the application to reflect the newly added project. 
@@ -768,91 +768,91 @@ imports
 
 .. code-block:: dart
 
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+  import 'package:flutter/material.dart';
+  import 'package:cloud_firestore/cloud_firestore.dart';
 
 The flutter material import is required for the Flutter framework. The firebase import is required for the Firestore database.
 
 
 .. code-block:: dart
 
-String getMonthName(int month) {
-  switch (month) {
-    case 1:
-      return 'January';
-    case 2:
-      return 'February';
-    case 3:
-      return 'March';
-    case 4:
-      return 'April';
-    case 5:
-      return 'May';
-    case 6:
-      return 'June';
-    case 7:
-      return 'July';
-    case 8:
-      return 'August';
-    case 9:
-      return 'September';
-    case 10:
-      return 'October';
-    case 11:
-      return 'November';
-    case 12:
-      return 'December';
-    default:
-      return '';
+  String getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'January';
+      case 2:
+        return 'February';
+      case 3:
+        return 'March';
+      case 4:
+        return 'April';
+      case 5:
+        return 'May';
+      case 6:
+        return 'June';
+      case 7:
+        return 'July';
+      case 8:
+        return 'August';
+      case 9:
+        return 'September';
+      case 10:
+        return 'October';
+      case 11:
+        return 'November';
+      case 12:
+        return 'December';
+      default:
+        return '';
+    }
   }
-}
 The method take a month as a parameter and it uses a switch statement to match the input month to its corresponding month name. Each case in the switch represents one of the twelve months. If the provided integer does not match any case from 1 to 12, the rethod returns an empty string.
 
 .. code-block:: dart
 
-Future<void> showDeleteConfirmationDialog(
-    BuildContext context,
-    VoidCallback onDelete,
-    List<dynamic> projectIDs,
-    int projectIndex,
-    String email) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Confirm'),
-        content: const SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('Are you sure you want to delete this?'),
-            ],
+  Future<void> showDeleteConfirmationDialog(
+      BuildContext context,
+      VoidCallback onDelete,
+      List<dynamic> projectIDs,
+      int projectIndex,
+      String email) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you want to delete this?'),
+              ],
+            ),
           ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Yes'),
-            onPressed: () async {
-              onDelete();
-              final projID = FirebaseFirestore.instance
-                  .collection('Projects')
-                  .doc(projectIDs[projectIndex]);
-              await projID.delete();
-              projectIDs.removeAt(projectIndex);
-              Navigator.of(context).pop();
-            },
-          ),
-          TextButton(
-            child: const Text('No'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () async {
+                onDelete();
+                final projID = FirebaseFirestore.instance
+                    .collection('Projects')
+                    .doc(projectIDs[projectIndex]);
+                await projID.delete();
+                projectIDs.removeAt(projectIndex);
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 The showDeleteConfirmationDialog method is designed to securely confirm the deletion of a project. It takes several parameters: VoidCallback onDelete to execute delete the project, List<dynamic> projectIDs and an int projectIndex to identify and delete the specific project from the Firestore database, and a String email which is not used in the current implementation whihc is intended for notifications (future feature). The method displays a modal AlertDialog asking the user to confirm the deletion.
 
 
