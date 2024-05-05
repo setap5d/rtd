@@ -5,6 +5,15 @@ Settings page - settings_page.dart, settings_widgets.dart
 settings_page.dart
 --------------------
 
+imports
+~~~~~~~~
+
+.. code-block:: dart
+
+  import 'package:flutter/material.dart';
+  import 'package:cloud_firestore/cloud_firestore.dart';
+  import 'settings_widgets.dart';
+
 .. code-block:: dart  
 
   class SettingsPage extends StatefulWidget {
@@ -22,6 +31,8 @@ settings_page.dart
     State<SettingsPage> createState() => _SettingsPageState();
   }
 
+The SettingsPage class is a StatefulWidget in Flutter designed to manage and display user-specific settings. It contains three key attributes: email, which stores the user's email address; settings, a map that holds various user preferences and configurations; and activeColorScheme, which represents the current color scheme of the app. The class also includes a state generation called _SettingsPageState() where the logic to handle changes to the settings is implemented. 
+
 
 .. code-block:: dart
 
@@ -37,6 +48,82 @@ settings_page.dart
       return Theme(
         data: ThemeData.from(colorScheme: widget.activeColorScheme),
         child: Container(
+          color: widget.activeColorScheme.background,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                    child: Container(...),
+      );
+    }
+  }
+
+The _SettingsPageState class serves as the state management component for the SettingsPage widget, handling the user interactions and backend operations associated with settings modifications. This class includes methods to save settings changes to Firebase (saveSettingsToFireBase), check the display mode (checkDisplayMode), and display a confirmation dialog (confirmationDialog).
+
+.. code-block:: dart
+
+    Future<void> saveSettingsToFireBase(email, settings) async {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      DocumentReference profileRef = db
+          .collection('Profiles')
+          .doc('$email')
+          .collection('User')
+          .doc('Settings');
+      await profileRef.set(settings);
+    }
+
+The saveSettingsToFireBase method is responsible for saving user settings to the Firebase Firestore database. It takes two parameters: email, which is the user's email address used to identify the user's profile, and settings, a map containing the user's settings data to be saved. Settings are succesfully saved to the database once the method is completed.
+
+.. code-block:: dart
+
+  void checkDisplayMode(email, settings) {
+    final displayMode = widget.settings["Display Mode"];
+    switch (displayMode) {
+      case "Dark Mode":
+        saveSettingsToFireBase(email, settings);
+        break;
+      case "Light Mode":
+        saveSettingsToFireBase(email, settings);
+        break;
+      case "High Contrast Mode":
+        saveSettingsToFireBase(email, settings);
+        break;
+      default:
+        confirmationDialog("Error", "Invalid display mode");
+    }
+  }
+
+The checkDisplayMode method in the _SettingsPageState class is designed to validate and handle changes in the display mode settings of a user's profile. This method takes two parameters: email, which identifies the user's profile, and settings, which is a map containing the user's settings. The method first retrieves the current display mode setting from widget.settings using the key "Display Mode". It then uses a switch statement to check the value of the display mode. If the display mode is set to "Dark Mode", "Light Mode", or "High Contrast Mode", it calls the saveSettingsToFireBase method to update the settings in Firestore. If none of these cases match (indicating an invalid or unrecognized display mode), it triggers a confirmationDialog with an error message. This method does not return a value (void) but directly affects the application's state and user interface by updating settings or informing the user of issues.
+
+
+.. code-block:: dart
+
+  void confirmationDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+The confirmationDialog method in the _SettingsPageState class is designed to display a simple alert dialog to the user. This method takes two parameters: title and message, which define the text to be displayed in the dialog's title bar and a confirmation changes stating that the colour scheme will be updated once the user logs back in again, respectively.  The method does not return any value (void) as it is solely responsible for displaying information and providing a mechanism to close the dialog. 
+
+.. code-block:: dart
+
+  child: Container(
           color: widget.activeColorScheme.background,
           child: Column(
             children: [
@@ -109,67 +196,19 @@ settings_page.dart
             ],
           ),
         ),
-      );
-    }
-  }
-
-.. code-block:: dart
-
-    Future<void> saveSettingsToFireBase(email, settings) async {
-      FirebaseFirestore db = FirebaseFirestore.instance;
-      DocumentReference profileRef = db
-          .collection('Profiles')
-          .doc('$email')
-          .collection('User')
-          .doc('Settings');
-      await profileRef.set(settings);
-    }
-
-.. code-block:: dart
-
-  void checkDisplayMode(email, settings) {
-    final displayMode = widget.settings["Display Mode"];
-    switch (displayMode) {
-      case "Dark Mode":
-        saveSettingsToFireBase(email, settings);
-        break;
-      case "Light Mode":
-        saveSettingsToFireBase(email, settings);
-        break;
-      case "High Contrast Mode":
-        saveSettingsToFireBase(email, settings);
-        break;
-      default:
-        confirmationDialog("Error", "Invalid display mode");
-    }
-  }
-
-
-.. code-block:: dart
-
-  void confirmationDialog(String title, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+The child widget of the _SettingsPageState class defines the layout and content of the settings page within the app. It consists of a Container widget with a background color set to widget.activeColorScheme.background, ensuring consistency with the app's overall color scheme. 
 
 
 settings_widgets.dart
 ----------------------
+
+imports
+~~~~~~~~
+.. code-block:: dart
+
+  import 'package:flutter/material.dart';
+
+
 
 .. code-block:: dart
 
@@ -192,6 +231,7 @@ settings_widgets.dart
     State<RadioSetting> createState() => _RadioSettingState();
   }
 
+The RadioSetting class is a StatefulWidget in Flutter designed specifically to handle the selection of options for the SettingsPage class using radio buttons.  It has several key attributes: settingName for the setting's label, optionsList containing the available choices, defaultOption indicating the initially selected option, onChanged as a callback for handling changes, and colorScheme for styling. The createState() method links this configuration with the _RadioSettingState class, which manages the state of the selected radio button and ensures the widget reflects the current selection.
 
 .. code-block:: dart
 
@@ -199,7 +239,8 @@ settings_widgets.dart
     String selectedOption = "";
   
     _RadioSettingState();
-  
+
+    void initState() {...}
   
     @override
     Widget build(BuildContext context) {
@@ -238,6 +279,9 @@ settings_widgets.dart
     }
   }
 
+
+The _RadioSettingState class manages the state for the RadioSetting widget, primarily handling user interactions with radio button options. This class starts with an attribute selectedOption, initialized as an empty string to track the currently selected radio button. The build method constructs the UI which includes a Column displaying the setting's name and the list of radio buttons generated dynamically from widget.optionsList. Each radio button, when selected, triggers an update to selectedOption using setState, ensuring the UI reflects the current selection and also invokes the widget.onChanged callback to notify of changes. 
+
 .. code-block:: dart
 
     void initState() {
@@ -252,6 +296,9 @@ settings_widgets.dart
         selectedOption = widget.optionsList[3];
       }
     }
+
+
+The initState method in the _RadioSettingState class is overridden to set up the initial state of the radio buttons based on the defaultOption specified in the RadioSetting widget. This method does not take any parameters nor does it return any value, as it's designed to execute when the state is first created, setting internal state variables before the widget builds. Specifically, it checks the defaultOption provided and sets the selectedOption state variable to the corresponding value from the optionsList. 
 
 
 
