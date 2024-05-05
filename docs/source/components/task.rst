@@ -263,6 +263,8 @@ This first import brings in the Material Design library from Flutter, providing 
     State<MyTasksPage> createState() => _MyTasksPageState();
   }
 
+The MyTasksPage class is a StatefulWidget in Flutter designed to manage and display detailed information about tasks for a specific project. It takes the projectName, email, projectID parameter, identify the project and the user that it's logged in. The TaskNames, taskAssignees, taskDescriptions store dynamic data for each task.
+
 .. code-block:: dart
 
   class _MyTasksPageState extends State<MyTasksPage> {
@@ -286,158 +288,16 @@ This first import brings in the Material Design library from Flutter, providing 
 
     void incrementCounter() {...}
 
+    void triggerRebuild() {...}
+
+    void decrementIndex(int index) {...}
+
     @override
-      Widget build(BuildContext context) {
-        final screenWidth = MediaQuery.of(context).size.width;
+    Widget build(BuildContext context) {...}
+}
+
     
-        return Theme(
-          data: ThemeData.from(colorScheme: widget.activeColorScheme),
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(widget.projectName),
-            ),
-            body: Row(
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 700,
-                        width: screenWidth,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                            width: 0.5,
-                          ),
-                        ),
-                        child: ListView.builder(
-                          itemCount: _counter,
-                          itemBuilder: (context, index) {
-                            double cardHeight =
-                                widget.isCardExpanded[index] ? 300.0 : 70.0;
-                            return Container(
-                              constraints: BoxConstraints(maxHeight: cardHeight),
-                              child: InkWell(
-                                onTap: () async {
-                                  if (ticketChecked[index] == false) {
-                                    FirebaseFirestore db =
-                                        FirebaseFirestore.instance;
-                                    final QuerySnapshot<Map<String, dynamic>>
-                                        tasksQuery = await db
-                                            .collection('Projects')
-                                            .doc(widget.projectID)
-                                            .collection('Tasks')
-                                            .doc(widget.taskNames[index])
-                                            .collection('Tickets')
-                                            .get();
-                                    for (var ticket in tasksQuery.docs) {
-                                      if (ticket.id != "Placeholder Doc") {
-                                        ticketNamesList[index].add(ticket.id);
-                                        ticketDescriptionsList[index]
-                                            .add(ticket.get('Ticket Description'));
-                                      }
-                                    }
-                                    ticketChecked[index] = true;
-                                    await Future.delayed(
-                                        const Duration(milliseconds: 100));
-                                  }
-                                  setState(() {
-                                    widget.isCardExpanded[index] =
-                                        !widget.isCardExpanded[index];
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 0),
-                                  height: cardHeight,
-                                  child: Column(
-                                    children: [
-                                      TaskCard(
-                                        height: cardHeight,
-                                        taskName: '${widget.taskNames[index]}',
-                                        deadline: widget.deadlines[index] != null
-                                            ? '${widget.deadlines[index]!.day}/${widget.deadlines[index]!.month}/${widget.deadlines[index]!.year}'
-                                            : 'No Deadline Set',
-                                        taskAssignees:
-                                            '${widget.taskAssignees[index]}',
-                                        taskDescription:
-                                            '${widget.taskDescriptions[index]}',
-                                        ticketNames: ticketNamesList[index],
-                                        width: 300,
-                                        isCardExpanded:
-                                            widget.isCardExpanded[index],
-                                        addTicket: addTicket,
-                                        index: index,
-                                        activeColorScheme: widget.activeColorScheme,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: widget.activeColorScheme.inversePrimary,
-              onPressed: () async {
-                await showDialog<void>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    backgroundColor: widget.activeColorScheme.background,
-                    content: Stack(
-                      clipBehavior: Clip.none,
-                      children: <Widget>[
-                        Positioned(
-                          right: -40,
-                          top: -40,
-                          child: InkResponse(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: CircleAvatar(
-                              backgroundColor: widget.activeColorScheme.primary,
-                              child: const Icon(Icons.close),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          color: widget.activeColorScheme.background,
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                TaskTextField(widget: widget, taskNameController: taskNameController, fieldName: "Task Name", errorMessage: "Please enter task name",),
-                                TaskTextField(widget: widget, taskNameController: taskAssigneesController, fieldName: "Task Assignees", errorMessage: "Please enter task assignees",),
-                                TaskTextField(widget: widget, taskNameController: taskDescriptionController, fieldName: "Task Description", errorMessage: "Please enter task description",),
-                                TaskButtonField(widget: widget, text: "Set Deadline", onPressed: () => selectDate(context, _counter),),
-                                TaskButtonField(widget: widget, text: "Submit", onPressed: () => addNewTask(context),),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-              tooltip: 'New Task',
-              child: Icon(
-                Icons.add,
-                color: widget.activeColorScheme.secondary,
-              ),
-            ),
-          ),
-        );
-      }
-    }
+The _MyTasksPageState class is the state management component for the MyTasksPage widget in Flutter, designed to handle the functionality related to displaying and managing tasks within a specific project. It uses several controllers (taskNameController, taskAssigneesController, taskDescriptionController) to manage form inputs and stores lists of ticket names and descriptions to handle dynamic task details. The class includes functionality to add new tickets to tasks (addTicket), create new tasks (addNewTask), and choose deadlines (selectDate). It maintains a counter (_counter) to track the number of tasks and uses a _formKey for form validation.
 
 .. code-block:: dart
 
