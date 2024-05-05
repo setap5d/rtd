@@ -234,6 +234,268 @@ task_page.dart
     State<MyTasksPage> createState() => _MyTasksPageState();
   }
 
+.. code-block:: dart
+
+  class _MyTasksPageState extends State<MyTasksPage> {
+    _MyTasksPageState();
+    int _counter = 0;
+    final _formKey = GlobalKey<FormState>();
+    TextEditingController taskNameController = TextEditingController();
+    TextEditingController taskAssigneesController = TextEditingController();
+    TextEditingController taskDescriptionController = TextEditingController();
+    List<List<String>> ticketNamesList = [];
+    List<List<String>> ticketDescriptionsList = [];
+    List<bool> ticketChecked = [];
+  
+    void addTicket(BuildContext context, int index) async {...}
+
+    void addNewTask(BuildContext context) {...}
+
+    void initState() {...}
+
+    Future<void> selectDate(BuildContext context, int index) async {...}
+
+    void incrementCounter() {...}
+
+    @override
+      Widget build(BuildContext context) {
+        final screenWidth = MediaQuery.of(context).size.width;
+    
+        return Theme(
+          data: ThemeData.from(colorScheme: widget.activeColorScheme),
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(widget.projectName),
+            ),
+            body: Row(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 700,
+                        width: screenWidth,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            width: 0.5,
+                          ),
+                        ),
+                        child: ListView.builder(
+                          itemCount: _counter,
+                          itemBuilder: (context, index) {
+                            double cardHeight =
+                                widget.isCardExpanded[index] ? 300.0 : 70.0;
+                            return Container(
+                              constraints: BoxConstraints(maxHeight: cardHeight),
+                              child: InkWell(
+                                onTap: () async {
+                                  if (ticketChecked[index] == false) {
+                                    FirebaseFirestore db =
+                                        FirebaseFirestore.instance;
+                                    final QuerySnapshot<Map<String, dynamic>>
+                                        tasksQuery = await db
+                                            .collection('Projects')
+                                            .doc(widget.projectID)
+                                            .collection('Tasks')
+                                            .doc(widget.taskNames[index])
+                                            .collection('Tickets')
+                                            .get();
+                                    for (var ticket in tasksQuery.docs) {
+                                      if (ticket.id != "Placeholder Doc") {
+                                        ticketNamesList[index].add(ticket.id);
+                                        ticketDescriptionsList[index]
+                                            .add(ticket.get('Ticket Description'));
+                                      }
+                                    }
+                                    ticketChecked[index] = true;
+                                    await Future.delayed(
+                                        const Duration(milliseconds: 100));
+                                  }
+                                  setState(() {
+                                    widget.isCardExpanded[index] =
+                                        !widget.isCardExpanded[index];
+                                  });
+                                },
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 0),
+                                  height: cardHeight,
+                                  child: Column(
+                                    children: [
+                                      TaskCard(
+                                        height: cardHeight,
+                                        taskName: '${widget.taskNames[index]}',
+                                        deadline: widget.deadlines[index] != null
+                                            ? '${widget.deadlines[index]!.day}/${widget.deadlines[index]!.month}/${widget.deadlines[index]!.year}'
+                                            : 'No Deadline Set',
+                                        taskAssignees:
+                                            '${widget.taskAssignees[index]}',
+                                        taskDescription:
+                                            '${widget.taskDescriptions[index]}',
+                                        ticketNames: ticketNamesList[index],
+                                        width: 300,
+                                        isCardExpanded:
+                                            widget.isCardExpanded[index],
+                                        addTicket: addTicket,
+                                        index: index,
+                                        activeColorScheme: widget.activeColorScheme,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: widget.activeColorScheme.inversePrimary,
+              onPressed: () async {
+                await showDialog<void>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    backgroundColor: widget.activeColorScheme.background,
+                    content: Stack(
+                      clipBehavior: Clip.none,
+                      children: <Widget>[
+                        Positioned(
+                          right: -40,
+                          top: -40,
+                          child: InkResponse(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: widget.activeColorScheme.primary,
+                              child: const Icon(Icons.close),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          color: widget.activeColorScheme.background,
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                TaskTextField(widget: widget, taskNameController: taskNameController, fieldName: "Task Name", errorMessage: "Please enter task name",),
+                                TaskTextField(widget: widget, taskNameController: taskAssigneesController, fieldName: "Task Assignees", errorMessage: "Please enter task assignees",),
+                                TaskTextField(widget: widget, taskNameController: taskDescriptionController, fieldName: "Task Description", errorMessage: "Please enter task description",),
+                                TaskButtonField(widget: widget, text: "Set Deadline", onPressed: () => selectDate(context, _counter),),
+                                TaskButtonField(widget: widget, text: "Submit", onPressed: () => addNewTask(context),),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              tooltip: 'New Task',
+              child: Icon(
+                Icons.add,
+                color: widget.activeColorScheme.secondary,
+              ),
+            ),
+          ),
+        );
+      }
+    }
+
+.. code-block:: dart
+
+  class TaskButtonField extends StatelessWidget {
+    const TaskButtonField({
+      super.key,
+      required this.widget,
+      required this.text,
+      required this.onPressed  
+      });
+  
+    final MyTasksPage widget;
+    final String text;
+    final VoidCallback onPressed;
+  
+    @override
+    Widget build(BuildContext context) {
+      return Padding(
+        padding: const EdgeInsets.all(8),
+        child: ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(
+            widget.activeColorScheme.inversePrimary,
+          )),
+          onPressed: onPressed,
+          child: Text(text,
+              style: TextStyle(
+                  color: widget.activeColorScheme.onBackground)),
+        ),
+      );
+    }
+  }
+
+.. code-block:: dart
+
+  class TaskTextField extends StatelessWidget {
+    const TaskTextField({
+      super.key,
+      required this.widget,
+      required this.taskNameController,
+      required this.fieldName,
+      required this.errorMessage
+    });
+  
+    final MyTasksPage widget;
+    final TextEditingController taskNameController;
+    final String fieldName;
+    final String errorMessage;
+  
+    @override
+    Widget build(BuildContext context) {
+      return Padding(
+        padding: const EdgeInsets.all(8),
+        child: TextFormField(
+          style: TextStyle(
+              color: widget.activeColorScheme.onBackground),
+          controller: taskNameController,
+          decoration: InputDecoration(
+            labelStyle: TextStyle(
+                color: widget.activeColorScheme.onBackground),
+            labelText: fieldName,
+            border: const OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return errorMessage;
+            }
+            return null;
+          },
+        ),
+      );
+    }
+  }
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
 
 
 
