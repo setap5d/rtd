@@ -3,6 +3,16 @@ Tasks page - task_cards.dart, task_page.dart
 
 task_cards.dart
 ----------------
+
+import
+~~~~~~~
+
+.. code-block:: dart
+
+  import 'package:flutter/material.dart';
+
+This import statement brings in the Material Design library from Flutter.
+
 .. code-block:: dart
 
   class TaskCard extends StatelessWidget {
@@ -39,143 +49,12 @@ task_cards.dart
     Widget build(BuildContext context) {
       return Theme(
         data: ThemeData.from(colorScheme: activeColorScheme),
-        child: Expanded(
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Container(
-                  width: width,
-                  height: height,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 170, 170, 170),
-                      width: 0.5,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Task Name: $taskName',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                ),
-                                overflow:
-                                    isCardExpanded ? null : TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                'Task Assignees: $taskAssignees',
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                ),
-                                overflow:
-                                    isCardExpanded ? null : TextOverflow.ellipsis,
-                              ),
-                              Visibility(
-                                visible: isCardExpanded,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Task Description: $taskDescription',
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    // Display ticket names here
-                                    if (ticketNames.isNotEmpty)
-                                      ...ticketNames.map((ticketName) => Text(
-                                            'Ticket: $ticketName',
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )),
-                                  ],
-                                ),
-                              ),
-                              if (isCardExpanded) const Spacer(),
-                              if (isCardExpanded)
-                                ElevatedButton(
-                                  onPressed: () {
-                                    addTicket(context, index);
-                                  },
-                                  child: const Text('Add Ticket'),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: SizedBox(
-                          width: 200,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Deadline',
-                                style: TextStyle(
-                                  color: activeColorScheme.onBackground,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              const SizedBox(height: 4.0),
-                              Text(
-                                deadline,
-                                style: TextStyle(
-                                  color: activeColorScheme.onBackground,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 5,
-                right: 5,
-                child: PopupMenuButton<String>(
-                  onSelected: handleMenuSelection,
-                  itemBuilder: (BuildContext context) => [
-                    const PopupMenuItem<String>(
-                      value: 'Edit',
-                      child: Text('Edit'),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'Delete',
-                      child: Text('Delete'),
-                    ),
-                  ],
-                  icon: const Icon(Icons.more_vert),
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: Expanded(...),
       );
     }
   }
+
+The TaskCard class is a StatelessWidget designed to display details of a task. It shows information such as the task name, assignees, description, and deadline, controlled by attributes like taskName, taskAssignees, taskDescription, and deadline. Additional attributes include activeColorScheme used to apply the color scheme selected by the user.
 
 .. code-block:: dart
 
@@ -188,11 +67,161 @@ task_cards.dart
     }
   }
 
+The handleMenuSelection method in the TaskCard class is designed to process user selections from a popup menu specifically for 'Edit' and 'Delete' actions. It takes a single parameter, value, which is a string representing the user's menu choice. 
 
+.. code-block:: dart
 
+  child: Expanded(
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Container(
+                    width: width,
+                    height: height,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 170, 170, 170),
+                        width: 0.5,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Task Name: $taskName',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  ),
+                                  overflow:
+                                      isCardExpanded ? null : TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  'Task Assignees: $taskAssignees',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                  overflow:
+                                      isCardExpanded ? null : TextOverflow.ellipsis,
+                                ),
+                                Visibility(
+                                  visible: isCardExpanded,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Task Description: $taskDescription',
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      // Display ticket names here
+                                      if (ticketNames.isNotEmpty)
+                                        ...ticketNames.map((ticketName) => Text(
+                                              'Ticket: $ticketName',
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )),
+                                    ],
+                                  ),
+                                ),
+                                if (isCardExpanded) const Spacer(),
+                                if (isCardExpanded)
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      addTicket(context, index);
+                                    },
+                                    child: const Text('Add Ticket'),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: SizedBox(
+                            width: 200,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Deadline',
+                                  style: TextStyle(
+                                    color: activeColorScheme.onBackground,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                const SizedBox(height: 4.0),
+                                Text(
+                                  deadline,
+                                  style: TextStyle(
+                                    color: activeColorScheme.onBackground,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 5,
+                  right: 5,
+                  child: PopupMenuButton<String>(
+                    onSelected: handleMenuSelection,
+                    itemBuilder: (BuildContext context) => [
+                      const PopupMenuItem<String>(
+                        value: 'Edit',
+                        child: Text('Edit'),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'Delete',
+                        child: Text('Delete'),
+                      ),
+                    ],
+                    icon: const Icon(Icons.more_vert),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+This code snippet displays task details like name, assignees, description, and deadline. The card also provides functionality to edit or delete tasks through a popup menu button. The layout adjusts based on whether the card is expanded or not, showing additional details like ticket names when expanded. 
 
 task_page.dart
 ---------------
+
+imports
+~~~~~~~~
+
+.. code-block:: dart
+
+  import 'package:flutter/material.dart';
+  import 'task_cards.dart';
+  import 'package:cloud_firestore/cloud_firestore.dart';
+  import 'project_format.dart';
+
+This first import brings in the Material Design library from Flutter, providing UI components and styling options. The second import imports the TaskCard class which is used to display the tasks in the task page. The third import adds the Firestore database library to retrieve and add tasks to the database. This last import is used to access the project that contain the tasks.
 
 .. code-block:: dart
 
