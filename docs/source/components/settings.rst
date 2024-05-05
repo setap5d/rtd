@@ -14,6 +14,8 @@ imports
   import 'package:cloud_firestore/cloud_firestore.dart';
   import 'settings_widgets.dart';
 
+This first import statement brings in the Material Design library from Flutter. This second import statement imports the Cloud Firestore package for Dart, necessary to access the database. The last import statement bring class that are used for the visual representation of the settings' page.
+
 .. code-block:: dart  
 
   class SettingsPage extends StatefulWidget {
@@ -208,7 +210,7 @@ imports
 
   import 'package:flutter/material.dart';
 
-
+This first import statement brings in the Material Design library from Flutter.
 
 .. code-block:: dart
 
