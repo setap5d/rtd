@@ -412,6 +412,7 @@ The showEditDialog method provides a comprehensive interface for editing project
               ],
             ),
           ),
+
 The Align widget in the _ProjectTileState class serves as a layout tool to precisely place the PopupMenuButton within the user interface of the ProjectTile widget. It ensures that the menu button is always located in the bottom-right corner of the tile, providing a consistent and intuitive interaction point for accessing additional options related to the project.
 
 
@@ -806,6 +807,7 @@ The flutter material import is required for the Flutter framework. The firebase 
         return '';
     }
   }
+
 The method take a month as a parameter and it uses a switch statement to match the input month to its corresponding month name. Each case in the switch represents one of the twelve months. If the provided integer does not match any case from 1 to 12, the rethod returns an empty string.
 
 .. code-block:: dart
@@ -853,6 +855,7 @@ The method take a month as a parameter and it uses a switch statement to match t
       },
     );
   }
+
 The showDeleteConfirmationDialog method is designed to securely confirm the deletion of a project. It takes several parameters: VoidCallback onDelete to execute delete the project, List<dynamic> projectIDs and an int projectIndex to identify and delete the specific project from the Firestore database, and a String email which is not used in the current implementation whihc is intended for notifications (future feature). The method displays a modal AlertDialog asking the user to confirm the deletion.
 
 
