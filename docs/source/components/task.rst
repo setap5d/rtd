@@ -301,13 +301,408 @@ The _MyTasksPageState class is the state management component for the MyTasksPag
 
 .. code-block:: dart
 
-  class TaskButtonField extends StatelessWidget {
-    const TaskButtonField({
-      super.key,
-      required this.widget,
-      required this.text,
-      required this.onPressed  
+  void addTicket(BuildContext context, int index) async {
+      final TextEditingController ticketNameController = TextEditingController();
+      final TextEditingController ticketDescriptionController = TextEditingController();
+  
+      await showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Stack(
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              Positioned(
+                right: -40,
+                top: -40,
+                child: InkResponse(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.red,
+                    child: Icon(Icons.close),
+                  ),
+                ),
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: TextFormField(
+                        controller: ticketNameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Ticket Name',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a ticket name';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: TextFormField(
+                        controller: ticketDescriptionController,
+                        decoration: const InputDecoration(
+                          labelText: 'Ticket Description',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a ticket description';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+  
+                            ticketNamesList[index].add(ticketNameController.text);
+                            ticketDescriptionsList[index].add(ticketDescriptionController.text);
+  
+                            FirebaseFirestore db = FirebaseFirestore.instance;
+                            DocumentReference ticketRef = db
+                                .collection('Projects')
+                                .doc(widget.projectID)
+                                .collection('Tasks')
+                                .doc(widget.taskNames[index])
+                                .collection('Tickets')
+                                .doc(ticketNameController.text);
+  
+                            ticketRef.set({
+                              "Ticket Description": ticketDescriptionController.text,
+                            });
+  
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: const Text('Submit'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+The addTicket method in the _MyTasksPageState class facilitates adding a new ticket to a specific task within a project.This method takes the index of the task to which the ticket will be added. It presents the user with a form in an AlertDialog to enter the ticket's name and description. Upon form validation, it updates the respective lists for ticket names and descriptions, saves the data to Firestore under the specified task and project, and then closes the dialog.
+
+.. code-block:: dart
+
+  void addNewTask(BuildContext context) {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+        if (_counter < widget.taskDescriptions.length) {
+          widget.taskDescriptions[_counter] = taskDescriptionController.text;
+        } else {
+          widget.taskDescriptions.add(taskDescriptionController.text);
+        }
+        Navigator.of(context).pop();
+        incrementCounter();
+  
+        FirebaseFirestore db = FirebaseFirestore.instance;
+        DocumentReference taskRef = db
+            .collection('Projects')
+            .doc(widget.projectID)
+            .collection("Tasks")
+            .doc(taskNameController.text);
+        taskRef.set({
+          "Task Assignees": taskAssigneesController.text,
+          "Task Description": taskDescriptionController.text,
+          "Deadline": widget.deadlines[_counter - 1]
+        });
+  
+        taskNameController.clear();
+        taskAssigneesController.clear();
+        taskDescriptionController.clear();
+        // Navigator.of(context).pop();
+      }
+    }
+The addNewTask method in the _MyTasksPageState class is responsible for adding new tasks to a project. The method starts by validating the form inputs via a form key (_formKey). Upon successful validation, it updates the task descriptions list with the new task's description. It then increments the task counter, manages navigation to pop the dialog, and commits the new task data to Firestore under the specific project ID and task name. The task data includes assignees, description, and the latest deadline. After saving the data, it clears the input fields for reuse.
+
+
+.. code-block:: dart
+
+    void initState() {
+      _counter = widget.counter;
+      super.initState();
+      ticketNamesList = List.generate(100, (index) => []);
+      ticketDescriptionsList = List.generate(100, (index) => []);
+      ticketChecked = List.generate(100, (index) => false);
+    }
+
+The initState method in the _MyTasksPageState class is an initialization lifecycle hook that sets up initial state values for the widget. It starts by setting _counter to the value of counter passed from the parent widget, ensuring that the task count is correctly initialized. This method then proceeds to initialize three lists using List.generate: ticketNamesList and ticketDescriptionsList are set up to store names and descriptions for up to 100 tickets, respectively, each initialized as empty lists. Similarly, ticketChecked is initialized with 100 boolean values set to false, indicating that no tickets have been checked yet. 
+
+.. code-block:: dart
+
+    Future<void> selectDate(BuildContext context, int index) async {
+      final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101),
+      );
+      if (picked != null && picked != widget.deadlines[index]) {
+        setState(() {
+          widget.deadlines[index] = picked;
+        });
+      }
+    }
+
+The selectDate method is an asynchronous function that allows the user to pick a date using a date picker dialog. The method takes the index of the task's deadline to be updated.  Within the method, showDatePicker displays the date picker dialog, initialized with the current date as the initial date and allowing selection of dates between today and the year 2101. When the user selects a date (picked), it updates the deadline of the task at the specified index in the widget.deadlines list, triggering a state update using setState. This method does not return anything explicitly, as it updates the state of the widget directly.
+
+.. code-block:: dart
+
+    void incrementCounter() {
+      setState(() {
+        _counter++;
+        widget.isCardExpanded.add(false);
+        widget.taskNames.add(taskNameController.text);
+        widget.taskAssignees.add(taskAssigneesController.text);
+        widget.taskDescriptions.add(taskDescriptionController.text);
+        widget.deadlines.add(null);
       });
+    }
+
+The incrementCounter method in the _MyTasksPageState class is a utility function designed to manage the addition of new task-related data to the state of the MyTasksPage widget. This method does not take any parameters nor does it return any value, as its primary function is to update the state of the widget. When called, it increments a counter (_counter) used to track the number of tasks. Simultaneously, it adds default or new values to various lists that store task information, such as isCardExpanded, taskNames, taskAssignees, taskDescriptions, and deadlines. This addition includes setting new task details from the form, adding a default false value to isCardExpanded to keep the task initially collapsed, and appending a null to deadlines indicating no deadline set.
+
+.. code-block:: dart
+
+    void triggerRebuild() {
+      //triggers rebuild
+      setState(() {});
+    }
+  
+    void decrementIndex(int index) {
+      //decrements the counter when a task is deleted
+      _counter--;
+      triggerRebuild();
+    }
+
+The triggerRebuild and decrementIndex methods in the _MyTasksPageState class facilitate dynamic UI updates within a task management context. The triggerRebuild method employs setState() to prompt a UI refresh without altering any state data directly. Conversely, decrementIndex is specifically used when a task is removed; it decrements a task counter (_counter) and calls triggerRebuild to update the UI accordingly. 
+
+.. code-block:: dart
+
+    @override
+    Widget build(BuildContext context) {
+      final screenWidth = MediaQuery.of(context).size.width;
+  
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        triggerRebuild.call();
+      });
+  
+      return Theme(
+        data: ThemeData.from(colorScheme: widget.activeColorScheme),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(widget.projectName),
+          ),
+          body: Row(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 700,
+                      width: screenWidth,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          width: 0.5,
+                        ),
+                      ),
+                      child: ListView.builder(
+                        //call this to rebuild after deleting or updating a project
+                        itemCount: _counter,
+                        itemBuilder: (context, index) {
+                          double cardHeight =
+                              widget.isCardExpanded[index] ? 300.0 : 70.0;
+                          return Container(
+                            constraints: BoxConstraints(maxHeight: cardHeight),
+                            child: InkWell(
+                              onTap: () async {
+                                if (ticketChecked[index] == false) {
+                                  FirebaseFirestore db =
+                                      FirebaseFirestore.instance;
+                                  final QuerySnapshot<Map<String, dynamic>>
+                                      tasksQuery = await db
+                                          .collection('Projects')
+                                          .doc(widget.projectID)
+                                          .collection('Tasks')
+                                          .doc(widget.taskNames[index])
+                                          .collection('Tickets')
+                                          .get();
+                                  for (var ticket in tasksQuery.docs) {
+                                    if (ticket.id != "Placeholder Doc") {
+                                      ticketNamesList[index].add(ticket.id);
+                                      ticketDescriptionsList[index]
+                                          .add(ticket.get('Ticket Description'));
+                                    }
+                                  }
+                                  ticketChecked[index] = true;
+                                  await Future.delayed(
+                                      const Duration(milliseconds: 100));
+                                }
+                                setState(() {
+                                  widget.isCardExpanded[index] =
+                                      !widget.isCardExpanded[index];
+                                });
+                              },
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 0),
+                                height: cardHeight,
+                                child: Column(
+                                  children: [
+                                    TaskCard(
+                                      height: cardHeight,
+                                      taskName: '${widget.taskNames[index]}',
+                                      deadline: widget.deadlines[index] != null
+                                          ? '${widget.deadlines[index]!.day}/${widget.deadlines[index]!.month}/${widget.deadlines[index]!.year}'
+                                          : 'No Deadline Set',
+                                      taskAssignees:
+                                          '${widget.taskAssignees[index]}',
+                                      taskDescription:
+                                          '${widget.taskDescriptions[index]}',
+                                      ticketNames: ticketNamesList[index],
+                                      width: 300,
+                                      isCardExpanded: widget.isCardExpanded,
+                                      addTicket: addTicket,
+                                      index: index,
+                                      activeColorScheme: widget.activeColorScheme,
+                                      formKey: _formKey,
+                                      deadlines: widget.deadlines,
+                                      projectID: widget.projectID,
+                                      counter: _counter,
+                                      taskNames: widget.taskNames,
+                                      taskDescriptions: widget.taskDescriptions,
+                                      allTaskAssignees: widget.taskAssignees,
+                                      decrementIndex: decrementIndex,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(...)
+          ),
+        );
+      }
+    }
+
+This method is used to build the widget. It utilizes a ListView.builder to create a list of expandable TaskCard widgets, each representing a task. The number of cards is determined by _counter, and each card can expand or collapse to show more or less detail about the task, including descriptions and associated tickets.The list updates in response to interactions, such as tapping a card to expand it, which may trigger fetching ticket details from a Firestore database if they haven't been loaded previously.
+
+.. code-block:: dart
+
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: widget.activeColorScheme.inversePrimary,
+            onPressed: () async {
+              await showDialog<void>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  backgroundColor: widget.activeColorScheme.background,
+                  content: Stack(
+                    clipBehavior: Clip.none,
+                    children: <Widget>[
+                      Positioned(
+                        right: -40,
+                        top: -40,
+                        child: InkResponse(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: widget.activeColorScheme.primary,
+                            child: const Icon(Icons.close),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: widget.activeColorScheme.background,
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              TaskTextField(
+                                widget: widget,
+                                taskNameController: taskNameController,
+                                fieldName: "Task Name",
+                                errorMessage: "Please enter task name",
+                              ),
+                              TaskTextField(
+                                widget: widget,
+                                taskNameController: taskAssigneesController,
+                                fieldName: "Task Assignees",
+                                errorMessage: "Please enter task assignees",
+                              ),
+                              TaskTextField(
+                                widget: widget,
+                                taskNameController: taskDescriptionController,
+                                fieldName: "Task Description",
+                                errorMessage: "Please enter task description",
+                              ),
+                              TaskButtonField(
+                                widget: widget,
+                                text: "Set Deadline",
+                                onPressed: () => selectDate(context, _counter),
+                              ),
+                              TaskButtonField(
+                                widget: widget,
+                                text: "Submit",
+                                onPressed: () => addNewTask(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            tooltip: 'New Task',
+            child: Icon(
+              Icons.add,
+              color: widget.activeColorScheme.secondary,
+            ),
+          ),
+
+
+The FloatingActionButton in this snippet is used to add new tasks within the MyTasksPage. When pressed, it triggers an asynchronous function that presents a dialog containing a form for task creation. Additional functionality within the dialog includes a button to set a task deadline using a date picker, and a submit button that calls addNewTask(context) to save the new task to the system. This process involves not only capturing user input but also handling data validation and updating the application's state and backend with the new task details. Succcessfully added tasks are stored in the database.
+
+
+.. code-block:: dart
+
+  class TaskButtonField extends StatelessWidget {
+    const TaskButtonField(
+        {super.key,
+        required this.widget,
+        required this.text,
+        required this.onPressed});
   
     final MyTasksPage widget;
     final String text;
@@ -319,18 +714,17 @@ The _MyTasksPageState class is the state management component for the MyTasksPag
         padding: const EdgeInsets.all(8),
         child: ElevatedButton(
           style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(
+              backgroundColor: MaterialStateProperty.all<Color>(
             widget.activeColorScheme.inversePrimary,
           )),
           onPressed: onPressed,
           child: Text(text,
-              style: TextStyle(
-                  color: widget.activeColorScheme.onBackground)),
+              style: TextStyle(color: widget.activeColorScheme.onBackground)),
         ),
       );
     }
   }
+The TaskButtonField class encapsulates a button widget tailored for tasks. It takes in parameters such as the parent widget (MyTasksPage), the button text (text), and the callback function to be executed when the button is pressed (onPressed).
 
 .. code-block:: dart
 
@@ -373,6 +767,7 @@ The _MyTasksPageState class is the state management component for the MyTasksPag
     }
   }
 
+The TaskTextField class is a StatelessWidget designed to encapsulate a text input field specifically tailored for task-related forms.  It accepts several parameters for customization and functionality: widget, which refers to the parent widget (MyTasksPage) providing access to the current theme's color scheme; taskNameController, a TextEditingController that manages the text input within the field; fieldName, a string that labels the input field; and errorMessage, a string displayed when validation fails. In its build method, it constructs a TextFormField styled according to the parent widget's color scheme and includes a validator function that checks if the input is empty, returning an error message if so. 
 
 
 
