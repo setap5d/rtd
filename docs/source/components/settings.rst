@@ -198,6 +198,7 @@ The confirmationDialog method in the _SettingsPageState class is designed to dis
             ],
           ),
         ),
+
 The child widget of the _SettingsPageState class defines the layout and content of the settings page within the app. It consists of a Container widget with a background color set to widget.activeColorScheme.background, ensuring consistency with the app's overall color scheme. 
 
 
