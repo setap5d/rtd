@@ -4,7 +4,7 @@ Profile page - profile.dart
 imports
 -------
 
-.. code-block::
+.. code-block:: dart
     
     import 'dart:io';
     import 'package:file_picker/file_picker.dart';
@@ -18,7 +18,7 @@ Additionally, the file_picker package is used to allow the user to select a prof
 ProfilePage
 ------------
 
-.. code-block::
+.. code-block:: dart
     
     class ProfilePage extends StatefulWidget {
         const ProfilePage(
@@ -37,7 +37,7 @@ _ProfilePageState class.
 _ProfilePageState
 -----------------
 
-.. code-block::
+.. code-block:: dart
 
     class _ProfilePageState extends State<ProfilePage> {
         String fName = '';
@@ -59,7 +59,7 @@ skills. We also define the attributes required for profile picture upload.
 * The urlDownload attribute is used to store the download URL of the user's profile picture.
 * The newImage attribute is used to determine whether the user has selected a new profile picture.
 
-.. code-block::
+.. code-block:: dart
 
     Future uploadImage() async {
         final path = 'files/${selectedImage!.name}'; // Change this to firebase path
@@ -86,7 +86,7 @@ path and uploads it to the Firebase Storage path. The download URL of the image 
 urlDownload attribute for later fetching. Afterwards, the newImage attribute is set to true to indicate that a new image has been 
 uploaded and uploadTask is set to null to show that nothing is currently being uploaded.
 
-.. code-block::
+.. code-block:: dart
 
     Future selectImage() async {
         final result = await FilePicker.platform.pickFiles(
@@ -104,7 +104,7 @@ This function is used to allow the user to select a profile picture from their d
 to allow the user to select a file that can only be an image. The selected image is then stored in the selectedImage 
 attribute. 
 
-.. code-block::
+.. code-block:: dart
 
     void checkInputs(String fName, String lName, String email, String phoneNumber,
       String skills) {
@@ -141,7 +141,7 @@ phone number, and skills as parameters. It then calls a function for each parame
 If all checks pass, the database is updated with the user's profile details. If a new image has been uploaded, 
 the database is updated with the download URL of the new profile picture.
 
-.. code-block::
+.. code-block:: dart
 
     bool isValidName(String fName, String lName) {
         if (fName.isEmpty || lName.isEmpty) {
@@ -237,7 +237,7 @@ The isValidSkills function checks if the skills input is valid. The skills input
 The length of the skills field must be between 10 and 100 characters. If this condition is not met, the function 
 returns false.
 
-.. code-block::
+.. code-block:: dart
 
     @override
     void initState() {
@@ -252,7 +252,7 @@ returns false.
 The initState method is used to set the initial state of the ProfilePage class. The user's first name, last name, email, 
 phone number, and skills are set to the values stored in the profDetails list.
 
-.. code-block::
+.. code-block:: dart
 
     @override
     Widget build(BuildContext context) {
@@ -278,7 +278,7 @@ The build method is used to create the UI of the ProfilePage class. The UI consi
 two ElevatedButton widgets. The first button is used to allow the user to select an image from their device. The second
 button is used to upload the selected image to Firebase Storage.
 
-.. code-block::
+.. code-block:: dart
 
          Row(
             children: [
@@ -314,7 +314,7 @@ button is used to upload the selected image to Firebase Storage.
 After the buttons, the UI contains two TextFormField widgets. These widgets are used to allow the user to input their
 first name and last name. When these are changed, the local values of lName and fName are updated.
 
-.. code-block::
+.. code-block:: dart
 
     child: TextFormField(
         initialValue: email,
@@ -359,7 +359,7 @@ The UI also contains three more TextFormField widgets. These widgets are used to
 phone number, and skills. Like the other TextFormField widgets, when these are changed, the local values of email, 
 phoneNumber, and skills are updated.
 
-.. code-block::
+.. code-block:: dart
 
     Text(
         errMessage,
@@ -370,7 +370,7 @@ The UI also contains a Text widget that displays an error message if any of the 
 message is initially set to null. During the checkInputs method, if any of the user's inputs are invalid, the error 
 message is updated accordingly
 
-.. code-block::
+.. code-block:: dart
 
     ElevatedButton(
         child: const Text('Save Changes'),
