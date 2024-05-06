@@ -294,7 +294,7 @@ The MyTasksPage class is a StatefulWidget in Flutter designed to manage and disp
 
     @override
     Widget build(BuildContext context) {...}
-}
+  }
 
     
 The _MyTasksPageState class is the state management component for the MyTasksPage widget in Flutter, designed to handle the functionality related to displaying and managing tasks within a specific project. It uses several controllers (taskNameController, taskAssigneesController, taskDescriptionController) to manage form inputs and stores lists of ticket names and descriptions to handle dynamic task details. The class includes functionality to add new tickets to tasks (addTicket), create new tasks (addNewTask), and choose deadlines (selectDate). It maintains a counter (_counter) to track the number of tasks and uses a _formKey for form validation.
@@ -432,6 +432,7 @@ The addTicket method in the _MyTasksPageState class facilitates adding a new tic
         // Navigator.of(context).pop();
       }
     }
+
 The addNewTask method in the _MyTasksPageState class is responsible for adding new tasks to a project. The method starts by validating the form inputs via a form key (_formKey). Upon successful validation, it updates the task descriptions list with the new task's description. It then increments the task counter, manages navigation to pop the dialog, and commits the new task data to Firestore under the specific project ID and task name. The task data includes assignees, description, and the latest deadline. After saving the data, it clears the input fields for reuse.
 
 
@@ -724,6 +725,7 @@ The FloatingActionButton in this snippet is used to add new tasks within the MyT
       );
     }
   }
+
 The TaskButtonField class encapsulates a button widget tailored for tasks. It takes in parameters such as the parent widget (MyTasksPage), the button text (text), and the callback function to be executed when the button is pressed (onPressed).
 
 .. code-block:: dart
