@@ -35,6 +35,4 @@ When the user logs in to their account on any device, their preferred settings w
 Consequence or side-effect:
 ---------------------------
 
-- Storing complex settings on the servers may be costly.
-
 - Users may want to have separate settings on different devices.
