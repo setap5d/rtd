@@ -1,4 +1,4 @@
-Requirement 5: Be able Manage user settings in Database
+Requirement 5: Be able to manage user settings in Database
 =========================================================
 
 Once the user has logged in to their accounts they will be able to change the settings for their own account.
@@ -35,4 +35,5 @@ When the user logs in to their account on any device, their preferred settings w
 Consequence or side-effect:
 ---------------------------
 
+- Storing complex settings on the servers may be costly.
 - Users may want to have separate settings on different devices.
